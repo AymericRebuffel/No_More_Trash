@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">No_More_Trash</string>
+
+    <string name="taille_dechet">Taille du déchet</string>
+    <string-array name="tailles">
+        <item>Petit</item>
+        <item>Moyen</item>
+        <item>Grand</item>
+        <item>Impossible à transporter à main nue</item>
+    </string-array>
+
+    <string name="type_dechet">Taille du déchet</string>
+    <string-array name="types">
+        <item>Organique</item>
+        <item>Verre</item>
+        <item>Métal</item>
+        <item>Plastique</item>
+        <item>Electronique</item>
+        <item>Autre</item>
+    </string-array>
 </resources>
