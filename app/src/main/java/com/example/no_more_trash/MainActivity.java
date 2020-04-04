@@ -22,10 +22,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         Button decharge = findViewById(R.id.decharge);
+        decharge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pageMap();
+            }
+        });
     }
 
     public void declarationDechet(View view){
         Intent gameActivity = new Intent(MainActivity.this, DeclarationDechet.class);
         startActivity(gameActivity);
+    }
+    public void pageMap(){
+        startActivity(new Intent(this,Map_Activity.class));
     }
 }
