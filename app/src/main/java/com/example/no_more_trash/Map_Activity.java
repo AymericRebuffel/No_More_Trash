@@ -13,6 +13,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
@@ -37,11 +38,18 @@ public class Map_Activity extends AppCompatActivity {
 
 
         ArrayList<OverlayItem> items = new ArrayList<OverlayItem>();
-       OverlayItem home = new OverlayItem("Une decheterie", "quelque part", new GeoPoint(43.65020,7.00517));
+        OverlayItem home = new OverlayItem("Une decheterie", "quelque part", new GeoPoint(43.65020,7.00517));
         Drawable m = home.getMarker(0);
 
         items.add(home);
         items.add(new OverlayItem("Resto", "chez babar", new GeoPoint(43.64950,7.00517)));
+
+        Marker mymark=new Marker(map);
+        mymark.setPosition( new GeoPoint(43.64950, 7.00517));
+        mymark.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        mymark.setIcon(getResources().getDrawable(R.drawable.trash));
+        map.getOverlays().add(mymark);
+        map.invalidate();
 
 
         ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(this, items,
