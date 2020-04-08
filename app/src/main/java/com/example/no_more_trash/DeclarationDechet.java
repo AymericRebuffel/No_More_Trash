@@ -140,7 +140,7 @@ public class DeclarationDechet extends AppCompatActivity {
 
     private void showGpsOptions() {
         startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
-        finish();
+        //finish();
     }
     
 }
