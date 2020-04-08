@@ -8,20 +8,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class HomeUser extends AppCompatActivity {
+public class HomeAdmin extends AppCompatActivity {
     Map_Activity map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        setContentView(R.layout.activity_home_user);
+        setContentView(R.layout.activity_home_admin);
         //Bouton pour chercher un déchetterie
         ImageView exit = findViewById(R.id.icon_param);
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeUser.this, Param_activity.class));
+                startActivity(new Intent(HomeAdmin.this, Param_activity.class));
             }
         });
         Button dechetterie = findViewById(R.id.dechtterie);
@@ -49,7 +49,7 @@ public class HomeUser extends AppCompatActivity {
     }
 
     public void declarationDechet(View view){
-        Intent gameActivity = new Intent(HomeUser.this, DeclarationDechet.class);
+        Intent gameActivity = new Intent(HomeAdmin.this, DeclarationDechet.class);
         startActivity(gameActivity);
     }
     public void pageMap(){
@@ -57,6 +57,6 @@ public class HomeUser extends AppCompatActivity {
     }
 
     public void declarationDecheterie(){
-        startActivity(new Intent(HomeUser.this,FormulaireDecheterieActivity.class));
+        startActivity(new Intent(HomeAdmin.this,FormulaireDecheterieActivity.class));
     }
 }
