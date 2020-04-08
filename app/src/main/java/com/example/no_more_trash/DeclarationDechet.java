@@ -118,7 +118,7 @@ public class DeclarationDechet extends AppCompatActivity {
     private void createGpsDisabledAlert() {
         AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
         localBuilder
-                .setMessage("Le GPS est désactivé, voulez-vous l'activer ?")
+                .setMessage("Le GPS est désactivé et il est nécessaire pour connaître la position du déchet, voulez-vous l'activer ?")
                 .setCancelable(false)
                 .setPositiveButton("Oui ",
                         new DialogInterface.OnClickListener() {
