@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -21,8 +20,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class DeclarationDechet extends AppCompatActivity {
@@ -66,7 +63,7 @@ public class DeclarationDechet extends AppCompatActivity {
         taille = spinnerTaille.getSelectedItem().toString();
         Spinner spinnerType = findViewById(R.id.spinnerType);
         type = spinnerType.getSelectedItem().toString();
-        Intent gameActivity = new Intent(DeclarationDechet.this, MainActivity.class);
+        Intent gameActivity = new Intent(DeclarationDechet.this, HomeUser.class);
         startActivity(gameActivity);
     }
 

@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Param_activity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".HomeUser">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,11 +23,11 @@
         <activity
             android:name=".Map_Activity"
             android:label="Map_Activity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".HomeUser" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value=".MainActivity"/>
+            android:value=".HomeUser"/>
         <activity android:name=".DeclarationDechet"></activity>
         <activity android:name=".FormulaireDecheterieActivity"></activity>
     </application>

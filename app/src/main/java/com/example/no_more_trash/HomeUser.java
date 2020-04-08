@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeUser extends AppCompatActivity {
     Map_Activity map;
 
     @Override
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Param_activity.class));
+                startActivity(new Intent(HomeUser.this, Param_activity.class));
             }
         });
         Button dechetterie = findViewById(R.id.dechtterie);
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void declarationDechet(View view){
-        Intent gameActivity = new Intent(MainActivity.this, DeclarationDechet.class);
+        Intent gameActivity = new Intent(HomeUser.this, DeclarationDechet.class);
         startActivity(gameActivity);
     }
     public void pageMap(){
@@ -57,6 +57,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void declarationDecheterie(){
-        startActivity(new Intent(MainActivity.this,FormulaireDecheterieActivity.class));
+        startActivity(new Intent(HomeUser.this,FormulaireDecheterieActivity.class));
     }
 }

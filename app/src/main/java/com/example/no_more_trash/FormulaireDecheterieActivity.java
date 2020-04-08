@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.MapView;
 
 public class FormulaireDecheterieActivity extends AppCompatActivity {
     private ImageView photo;
@@ -71,7 +70,7 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
     }
 
     public void Valider(View view){
-        Intent gameActivity = new Intent(this,MainActivity.class);
+        Intent gameActivity = new Intent(this, HomeUser.class);
         startActivity(gameActivity);
     }
 
