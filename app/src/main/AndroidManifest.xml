@@ -23,6 +23,7 @@
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".MainActivity"/>
         <activity android:name=".DeclarationDechet"></activity>
+        <activity android:name=".FormulaireDecheterieActivity"></activity>
     </application>
 
 </manifest>
