@@ -14,9 +14,11 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Map_Activity extends AppCompatActivity {
     private MapView map;
@@ -81,4 +83,10 @@ public class Map_Activity extends AppCompatActivity {
         map.onPause();
     }
 
+    public void addpin(String titre,String desription,GeoPoint g){
+        OverlayItem tmp= new OverlayItem(titre,desription,g);
+        List<OverlayItem> ltmp = new ArrayList<>();
+        ltmp.add(tmp);
+        map.getOverlays().add((Overlay) ltmp);
+    }
 }

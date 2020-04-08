@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.no_more_trash">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,9 +27,15 @@
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
+<<<<<<< HEAD
             android:value=".MainActivity" />
 
         <activity android:name=".DeclarationDechet" />
+=======
+            android:value=".MainActivity"/>
+        <activity android:name=".DeclarationDechet"></activity>
+        <activity android:name=".FormulaireDecheterieActivity"></activity>
+>>>>>>> 49f7875e32f791a304bdee13394293327a11f3e2
     </application>
 
 </manifest>

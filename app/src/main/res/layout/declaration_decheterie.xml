@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/Titre"
+        android:layout_width="347dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="4dp"
+        android:autoSizeTextType="uniform"
+        android:text="Entrez le nom de la decheterie:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+
+    <EditText
+        android:id="@+id/iddecharge"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="11dp"
+        android:text="nom ?"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewD"
+        app:layout_constraintTop_toBottomOf="@+id/Titre"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/latitude"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="103dp"
+        android:layout_marginBottom="27dp"
+        android:text="veuillez saisir la latitude :"
+        app:layout_constraintBottom_toTopOf="@+id/longitude"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewD"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/longitude"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginBottom="107dp"
+        android:text="veuillez saisir la longitude :"
+        app:layout_constraintBottom_toTopOf="@+id/ValidationD"
+        app:layout_constraintTop_toBottomOf="@+id/latitude"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="-16dp" />
+
+    <ImageView
+        android:id="@+id/imageViewD"
+        android:layout_width="190dp"
+        android:layout_height="190dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="148dp"
+        android:layout_marginEnd="16dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_foreground"
+        tools:ignore="VectorDrawableCompat" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/PhotoD"
+        android:layout_width="148dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="228dp"
+        android:layout_marginBottom="450dp"
+        android:text="Prendre une photo"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Infos"
+        tools:ignore="NotSibling" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/ValidationD"
+        android:layout_width="148dp"
+        android:layout_height="47dp"
+        android:layout_marginEnd="132dp"
+        android:layout_marginBottom="10dp"
+        android:text="OK"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
