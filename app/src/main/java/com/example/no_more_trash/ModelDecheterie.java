@@ -1,21 +1,29 @@
 package com.example.no_more_trash;
 
 import android.media.Image;
+import android.widget.ImageView;
 
 import org.osmdroid.util.GeoPoint;
 
 public class ModelDecheterie {
     private GeoPoint localisation;
     private String nom;
-    private Image image;
+    private ImageView image;
     private String description;
 
-    public ModelDecheterie(GeoPoint localisation, String nom, Image image, String description) {
+    public ModelDecheterie(GeoPoint localisation, String nom, ImageView image, String description) {
         this.localisation = localisation;
         this.nom = nom;
         this.image = image;
         this.description = description;
     }
+
+    public ModelDecheterie(GeoPoint localisation, String nom, String description) {
+        this.localisation = localisation;
+        this.nom = nom;
+        this.description = description;
+    }
+
     public GeoPoint getLocalisation() {
         return localisation;
     }
@@ -24,7 +32,7 @@ public class ModelDecheterie {
         return nom;
     }
 
-    public Image getImage() {
+    public ImageView getImage() {
         return image;
     }
 
@@ -40,7 +48,7 @@ public class ModelDecheterie {
         this.nom = nom;
     }
 
-    public void setImage(Image image) {
+    public void setImage(ImageView image) {
         this.image = image;
     }
 

@@ -42,8 +42,7 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
         });
         this.photo = findViewById(R.id.imageViewD);
         titre=nom.getText().toString();
-//        geoPoint=new GeoPoint(Integer.parseInt(longi.getText().toString()),Integer.parseInt(latti.getText().toString()));
-
+        geoPoint=new GeoPoint(Integer.parseInt(longi.getText().toString()),Integer.parseInt(latti.getText().toString()));
 
     }
 
@@ -74,7 +73,10 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
         startActivity(gameActivity);
     }
 
-   /* public void addpin(Map_Activity map){
-        map.addpin(titre,"",geoPoint);
-    }*/
+   public ModelDecheterie createDecheterie(){
+        if(photo!=null){
+            return new ModelDecheterie(geoPoint,titre,photo,"");
+        }
+        return new ModelDecheterie(geoPoint,titre,"");
+   }
 }
