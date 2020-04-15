@@ -1,4 +1,4 @@
-package com.example.no_more_trash;
+package com.example.no_more_trash.activities;
 
 import android.media.Image;
 import android.widget.ImageView;

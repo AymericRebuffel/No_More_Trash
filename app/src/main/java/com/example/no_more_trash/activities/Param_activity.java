@@ -1,10 +1,12 @@
-package com.example.no_more_trash;
+package com.example.no_more_trash.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.example.no_more_trash.R;
 
 public class Param_activity extends AppCompatActivity {
 

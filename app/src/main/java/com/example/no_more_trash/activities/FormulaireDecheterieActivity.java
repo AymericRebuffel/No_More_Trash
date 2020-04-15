@@ -1,4 +1,4 @@
-package com.example.no_more_trash;
+package com.example.no_more_trash.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.no_more_trash.R;
 
 import org.osmdroid.util.GeoPoint;
 

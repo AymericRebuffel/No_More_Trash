@@ -12,10 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomeUser" />
-        <activity android:name=".HomeAdmin" />
-        <activity android:name=".Param_activity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.HomeUser" />
+        <activity android:name=".activities.HomeAdmin" />
+        <activity android:name=".activities.Param_activity" />
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,13 +23,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Map_Activity"
+            android:name=".activities.Map_Activity"
             android:label="Map_Activity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".activities.MainActivity" />
 
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value=".MainActivity" />
+            android:value=".activities.MainActivity" />
 
         <activity android:name=".DeclarationDechet" />
         <activity android:name=".FormulaireDecheterieActivity" />

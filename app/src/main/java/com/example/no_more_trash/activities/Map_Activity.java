@@ -1,10 +1,12 @@
-package com.example.no_more_trash;
+package com.example.no_more_trash.activities;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.no_more_trash.R;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;

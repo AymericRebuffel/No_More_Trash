@@ -1,4 +1,4 @@
-package com.example.no_more_trash;
+package com.example.no_more_trash.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.no_more_trash.R;
 
 import java.util.Date;
 
