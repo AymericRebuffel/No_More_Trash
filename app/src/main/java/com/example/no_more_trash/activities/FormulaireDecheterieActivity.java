@@ -42,8 +42,6 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
         setContentView(R.layout.declaration_decheterie);
         Button valider=findViewById(R.id.ValidationD);
         EditText nom=findViewById(R.id.iddecharge);
-        EditText longi=findViewById(R.id.longitude);
-        EditText latti=findViewById(R.id.latitude);
         valider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,7 +57,6 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
         });
         this.photo = findViewById(R.id.imageViewD);
         titre=nom.getText().toString();
-        geoPoint=new GeoPoint(Integer.parseInt(longi.getText().toString()),Integer.parseInt(latti.getText().toString()));
         tmp.setLocalisation(geoPoint);
         tmp.setNom(titre);
         tmp.setImage(photo);
