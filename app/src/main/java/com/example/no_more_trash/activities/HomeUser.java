@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.example.no_more_trash.R;
 
-public class HomeUser extends AppCompatActivity {
+public class HomeUser extends AppCompatActivity{
     Map_Activity map;
 
     @Override
