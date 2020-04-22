@@ -58,6 +58,7 @@ public class DeclarationDechet extends AppCompatActivity {
         this.photo = findViewById(R.id.imageView);
     }
 
+
     public void Valider(View view){
         if(localisation!=null)
             date = new Date(localisation.getTime());
