@@ -1,6 +1,7 @@
-package com.example.no_more_trash.activities;
+package com.example.no_more_trash.models;
 
 import android.media.Image;
+import android.view.Display;
 import android.widget.ImageView;
 
 import org.osmdroid.util.GeoPoint;
@@ -16,6 +17,9 @@ public class ModelDecheterie {
         this.nom = nom;
         this.image = image;
         this.description = description;
+    }
+    public ModelDecheterie(){
+
     }
 
     public ModelDecheterie(GeoPoint localisation, String nom, String description) {
