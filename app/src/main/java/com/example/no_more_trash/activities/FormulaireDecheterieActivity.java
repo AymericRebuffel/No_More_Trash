@@ -39,6 +39,7 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ModelDecheterie tmp=new ModelDecheterie();
+        initialiserLocalisation();
         setContentView(R.layout.declaration_decheterie);
         Button valider=findViewById(R.id.ValidationD);
         EditText nom=findViewById(R.id.iddecharge);
