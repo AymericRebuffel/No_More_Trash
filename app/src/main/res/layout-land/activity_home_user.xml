@@ -55,60 +55,29 @@
         app:layout_constraintStart_toEndOf="@+id/icon_user"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/decharge"
-        android:layout_width="285dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="75dp"
-        android:layout_marginBottom="5dp"
-        android:background="#66CD00"
-        android:text="Les déchets aux alentours"
-        android:textSize="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/dechetterie"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/icon_param" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/dechetterie"
-        android:layout_width="285dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:background="#F4A460"
-        android:text="Je déclare un déchet"
-        android:textSize="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonDechetterie"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/decharge" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonDechetterie"
-        android:layout_width="285dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="60dp"
-        android:background="#F0FFFF"
-        android:text="Je déclare une decheterie"
+    <fragment
+        android:id="@+id/FragmentList"
+        android:name="com.example.no_more_trash.fragment.FragmentButton"
+        android:layout_width="316dp"
+        android:layout_height="fill_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dechetterie" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <fragment
         android:id="@+id/fluxweb"
-        android:name="com.example.no_more_trash.activities.FragmentWeb"
+        android:name="com.example.no_more_trash.fragment.FragmentWeb"
         android:layout_width="285dp"
         android:layout_height="fill_parent"
-        android:layout_marginStart="228dp"
         android:layout_marginTop="150dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/dechetterie"
         app:layout_constraintTop_toBottomOf="@+id/icon_param"
         app:layout_constraintVertical_bias="1.0" />
 

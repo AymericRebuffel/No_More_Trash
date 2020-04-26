@@ -1,4 +1,4 @@
-package com.example.no_more_trash.activities;
+package com.example.no_more_trash.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
