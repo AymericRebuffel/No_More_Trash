@@ -26,7 +26,7 @@ public class HomeUser extends AppCompatActivity{
                 startActivity(new Intent(HomeUser.this, Param_activity.class));
             }
         });
-        Button dechetterie = findViewById(R.id.dechtterie);
+        Button dechetterie = findViewById(R.id.dechetterie);
         dechetterie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,7 +34,7 @@ public class HomeUser extends AppCompatActivity{
             }
         });
         Button decharge = findViewById(R.id.decharge);
-        Button dechette=findViewById(R.id.buttonDecchete);
+        Button dechette=findViewById(R.id.buttonDechetterie);
         decharge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

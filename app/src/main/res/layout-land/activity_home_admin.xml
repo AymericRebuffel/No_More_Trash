@@ -5,22 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
         android:id="@+id/Titre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintVertical_weight="6"
         android:layout_marginStart="126dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="126dp"
         android:text="No More Trash"
-        android:textSize="20dp"
         android:textAlignment="center"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoSession" />
-
+        app:layout_constraintTop_toBottomOf="@+id/infoSession"
+        app:layout_constraintVertical_weight="6" />
 
     <ImageView
         android:id="@+id/icon_param"
@@ -58,41 +57,51 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/decharge"
-        android:layout_width="250dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="50dp"
+        android:layout_width="230dp"
+        android:layout_height="fill_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="80dp"
         android:background="#66CD00"
         android:text="Les déchets aux alentours"
         android:textSize="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Titre"
+        app:layout_constraintTop_toBottomOf="@+id/icon_user"
         tools:ignore="UnknownId" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/dechetterie"
-        android:layout_width="250dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="240dp"
+        android:layout_height="fill_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="80dp"
         android:background="#F4A460"
         android:text="Je déclare un déchet"
         android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/decharge" />
+        app:layout_constraintTop_toBottomOf="@+id/icon_user" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonDechetterie"
-        android:layout_width="250dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="229dp"
+        android:layout_height="fill_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="80dp"
         android:background="#F0FFFF "
         android:text="Je déclare une decheterie"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.981"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dechetterie"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/icon_user" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
