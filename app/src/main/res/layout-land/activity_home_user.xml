@@ -1,86 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-
-    <TextView
-        android:id="@+id/Titre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="126dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="126dp"
-        android:text="No More Trash"
-        android:textAlignment="center"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoSession"
-        app:layout_constraintVertical_weight="6" />
-
-    <ImageView
-        android:id="@+id/icon_param"
-        android:layout_width="54dp"
-        android:layout_height="39dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toTopOf="@id/Titre"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_param" />
-
-    <ImageView
-        android:id="@+id/icon_user"
-        android:layout_width="44dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="17dp"
-        app:layout_constraintEnd_toStartOf="@+id/infoSession"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_user" />
-
-    <TextView
-        android:id="@+id/infoSession"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="35dp"
-        android:text="Interface Utilisateur"
-        android:textColor="#7CFC00"
-        app:layout_constraintStart_toEndOf="@+id/icon_user"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <fragment
-        android:id="@+id/FragmentList"
-        android:name="com.example.no_more_trash.fragment.FragmentButton"
-        android:layout_width="316dp"
-        android:layout_height="fill_parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginBottom="10dp"
-        android:layout_weight="9"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="4dp"
+        android:id="@+id/FragmentInterface"
+        android:name="com.example.no_more_trash.fragment.FragmentInterface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        />
 
-    <fragment
-        android:id="@+id/fluxweb"
-        android:name="com.example.no_more_trash.fragment.FragmentWeb"
-        android:layout_width="285dp"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/icon_param"
-        app:layout_constraintVertical_bias="1.0" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="5">
+        <fragment
+            android:id="@+id/FragmentList"
+            android:name="com.example.no_more_trash.fragment.FragmentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+        <fragment
+            android:id="@+id/fluxweb"
+            android:name="com.example.no_more_trash.fragment.FragmentWeb"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"/>
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 
 

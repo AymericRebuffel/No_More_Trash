@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.no_more_trash.R;
 
@@ -18,6 +19,12 @@ public class HomeUser extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_home_user);
+
+        //utilisation du fragment pour indiquer session administrateur
+        View frag = findViewById(R.id.FragmentInterface);
+        TextView infoSession = frag.findViewById(R.id.infoSession);
+        infoSession.setText("Session Utilisateur");
+
         //Bouton pour chercher un déchetterie
         ImageView exit = findViewById(R.id.icon_param);
         exit.setOnClickListener(new View.OnClickListener() {
@@ -26,39 +33,5 @@ public class HomeUser extends AppCompatActivity{
                 startActivity(new Intent(HomeUser.this, Param_activity.class));
             }
         });
-        Button dechetterie = findViewById(R.id.dechetterie);
-        dechetterie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                declarationDechet(v);
-            }
-        });
-        Button decharge = findViewById(R.id.decharge);
-        Button dechette=findViewById(R.id.buttonDechetterie);
-        decharge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pageMap();
-            }
-        });
-
-        dechette.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                declarationDecheterie();
-            }
-        });
-    }
-
-    public void declarationDechet(View view){
-        Intent gameActivity = new Intent(HomeUser.this, DeclarationDechet.class);
-        startActivity(gameActivity);
-    }
-    public void pageMap(){
-        startActivity(new Intent(this,Map_Activity.class));
-    }
-
-    public void declarationDecheterie(){
-        startActivity(new Intent(HomeUser.this,FormulaireDecheterieActivity.class));
     }
 }
