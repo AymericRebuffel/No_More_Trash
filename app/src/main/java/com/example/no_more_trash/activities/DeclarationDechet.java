@@ -59,7 +59,7 @@ public class DeclarationDechet extends AppCompatActivity {
         getSupportActionBar().hide();
         Log.d("Start","Declaration dechet");
         initialiserLocalisation();
-        Log.d("Localisation : ", localisation.toString());
+        //Log.d("Localisation : ", localisation.toString());
         setContentView(R.layout.declaration_dechet);
         Button valider = findViewById(R.id.Validation);
         valider.setOnClickListener(new View.OnClickListener() {
@@ -151,9 +151,11 @@ public class DeclarationDechet extends AppCompatActivity {
         if(fournisseur != null)
         {
             localisation = locationManager.getLastKnownLocation(fournisseur);
-            assert localisation != null;
-            @SuppressLint("DefaultLocale") String coordonnees = String.format("Latitude : %f - Longitude : %f\n", localisation.getLatitude(), localisation.getLongitude());
-            Log.d("GPS", "coordonnees : " + coordonnees);
+            String coordonnees;
+            if(localisation!=null) {
+                coordonnees = String.format("Latitude : %f - Longitude : %f\n", localisation.getLatitude(), localisation.getLongitude());
+                Log.d("GPS", "coordonnees : " + coordonnees);
+            }
         }
     }
 
