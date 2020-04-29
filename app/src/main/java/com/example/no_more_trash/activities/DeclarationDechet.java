@@ -21,11 +21,29 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.no_more_trash.R;
+import com.example.no_more_trash.models.ModelDechet;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.BufferedReader;
+import java.io.DataOutput;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Date;
 
 public class DeclarationDechet extends AppCompatActivity {
-
     private ImageView photo;
     private LocationManager locationManager = null;
     private Location localisation = null;
@@ -41,12 +59,17 @@ public class DeclarationDechet extends AppCompatActivity {
         getSupportActionBar().hide();
         Log.d("Start","Declaration dechet");
         initialiserLocalisation();
+        Log.d("Localisation : ", localisation.toString());
         setContentView(R.layout.declaration_dechet);
         Button valider = findViewById(R.id.Validation);
         valider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Valider(v);
+                try {
+                    Valider(v);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         Button boutonPhoto = findViewById(R.id.Photo);
@@ -59,16 +82,34 @@ public class DeclarationDechet extends AppCompatActivity {
         this.photo = findViewById(R.id.imageView);
     }
 
-
-    public void Valider(View view){
+    public void Valider(View view) throws IOException {
         if(localisation!=null)
             date = new Date(localisation.getTime());
         Spinner spinnerTaille = findViewById(R.id.spinnerTaille);
         taille = spinnerTaille.getSelectedItem().toString();
         Spinner spinnerType = findViewById(R.id.spinnerType);
         type = spinnerType.getSelectedItem().toString();
+        ModelDechet modelDechet = new ModelDechet(/*photo,*/localisation,date,taille,type);
+        writeJson(modelDechet);
         Intent gameActivity = new Intent(DeclarationDechet.this, HomeUser.class);
         startActivity(gameActivity);
+    }
+
+    public void writeJson(ModelDechet dechet) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String res = "";
+        try {
+            res = mapper.writeValueAsString(dechet);
+            System.out.println(mapper.writeValueAsString(dechet));
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        FileOutputStream fos = openFileOutput("database_Dechets.json",MODE_APPEND);
+        if(fos!=null){
+            fos.write(("["+res+"]\n").getBytes());
+            fos.close();
+        }
     }
 
     private void prendrePhoto() {
@@ -117,6 +158,7 @@ public class DeclarationDechet extends AppCompatActivity {
     }
 
     private void createGpsDisabledAlert() {
+        Log.d("gps", "test");
         AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
         localBuilder
                 .setMessage("Le GPS est désactivé et il est nécessaire pour connaître la position du déchet, voulez-vous l'activer ?")
@@ -141,7 +183,6 @@ public class DeclarationDechet extends AppCompatActivity {
 
     private void showGpsOptions() {
         startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
-        //finish();
     }
-    
+
 }
