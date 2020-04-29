@@ -27,6 +27,7 @@ public class Map_Activity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle saveInstantState){
         super.onCreate(saveInstantState);
+        getSupportActionBar().hide();
         Configuration.getInstance().load(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
         setContentView(R.layout.map_decheterie);
         map = findViewById(R.id.map);

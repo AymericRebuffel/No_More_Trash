@@ -24,42 +24,21 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="11dp"
         android:text="nom ?"
-        app:layout_constraintBottom_toTopOf="@+id/imageViewD"
         app:layout_constraintTop_toBottomOf="@+id/Titre"
-        app:layout_constraintVertical_bias="0.512"
         tools:layout_editor_absoluteX="0dp" />
 
-    <ImageView
-        android:id="@+id/imageViewD"
-        android:layout_width="190dp"
-        android:layout_height="190dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="304dp"
-        android:layout_marginEnd="16dp"
-        android:scaleType="fitCenter"
+    <fragment
+        android:id="@+id/FragmentPhoto"
+        android:name="com.example.no_more_trash.fragment.formulaire.FragmentPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="195dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginBottom="215dp"
+        app:layout_constraintBottom_toTopOf="@+id/ValidationD"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_foreground"
-        tools:ignore="VectorDrawableCompat" />
-
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/PhotoD"
-        android:layout_width="148dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="96dp"
-        android:layout_marginEnd="260dp"
-        android:layout_marginBottom="324dp"
-        android:text="Prendre une photo"
-        android:textSize="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Infos"
-        tools:ignore="NotSibling" />
+        app:layout_constraintTop_toBottomOf="@+id/iddecharge" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/ValidationD"

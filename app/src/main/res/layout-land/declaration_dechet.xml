@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:autoSizeTextType="uniform"
-            android:text="Prenez une photo du déchet\nRemplissez le formulaire\nAppuyez sur OK."
+            android:text="Prenez une photo du déchet - Remplissez le formulaire - Appuyez sur OK."
             android:textAlignment="center"/>
     </LinearLayout>
 
@@ -40,48 +40,58 @@
         android:name="com.example.no_more_trash.fragment.formulaire.FragmentPhoto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="20"/>
+        android:layout_weight="10"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="15"
+        android:layout_weight="5"
         android:orientation="vertical"
         android:layout_marginRight="5dp">
 
-        <TextView
-            android:id="@+id/Taille"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:autoSizeTextType="uniform"
-            android:text="Taille du dechet :" />
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/Taille"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:text="Taille du dechet :" />
 
-        <Spinner
-            android:id="@+id/spinnerTaille"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:entries="@array/tailles"
-            android:prompt="@string/taille_dechet"
-            android:textAlignment="center" />
+            <Spinner
+                android:id="@+id/spinnerTaille"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:entries="@array/tailles"
+                android:prompt="@string/taille_dechet"
+                android:textAlignment="center" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/Type"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:autoSizeTextType="uniform"
-            android:text="Type de dechet :" />
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/Type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                android:text="Type de dechet :" />
 
-        <Spinner
-            android:id="@+id/spinnerType"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:entries="@array/types"
-            android:prompt="@string/type_dechet"
-            android:textAlignment="center" />
+            <Spinner
+                android:id="@+id/spinnerType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:entries="@array/types"
+                android:prompt="@string/type_dechet"
+                android:textAlignment="center" />
+        </LinearLayout>
     </LinearLayout>
 
     <Button

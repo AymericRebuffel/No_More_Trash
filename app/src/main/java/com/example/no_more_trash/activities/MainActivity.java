@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         findViewById(R.id.admin).setOnClickListener(new View.OnClickListener() {
             @Override

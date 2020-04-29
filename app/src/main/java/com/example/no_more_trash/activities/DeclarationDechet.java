@@ -38,6 +38,7 @@ public class DeclarationDechet extends AppCompatActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         Log.d("Start","Declaration dechet");
         initialiserLocalisation();
         setContentView(R.layout.declaration_dechet);

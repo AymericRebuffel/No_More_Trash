@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.no_more_trash.fragment.formulaire.FragmentPhoto;
 import com.example.no_more_trash.models.ModelDecheterie;
 import com.example.no_more_trash.models.*;
 
@@ -38,30 +39,33 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         ModelDecheterie tmp=new ModelDecheterie();
         initialiserLocalisation();
+
         setContentView(R.layout.declaration_decheterie);
+
+        //Boutton de validation du formulaire
         Button valider=findViewById(R.id.ValidationD);
-        EditText nom=findViewById(R.id.iddecharge);
         valider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Valider(v);
             }
         });
-        Button boutonPhoto = findViewById(R.id.PhotoD);
-        boutonPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                prendrePhoto();
-            }
-        });
-        this.photo = findViewById(R.id.imageViewD);
+
+        EditText nom=findViewById(R.id.iddecharge);
         titre=nom.getText().toString();
+
+        //Gestion de la prise de photo de la décharge
+        View frag = findViewById(R.id.FragmentPhoto);
+        this.photo = frag.findViewById(R.id.imageView);
+        //Iniatilisation de la déchetterie
         tmp.setLocalisation(geoPoint);
         tmp.setNom(titre);
         tmp.setImage(photo);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -89,6 +93,7 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
         Intent gameActivity = new Intent(this, HomeUser.class);
         startActivity(gameActivity);
     }
+
     @SuppressLint("MissingPermission")
     private void initialiserLocalisation()
     {
