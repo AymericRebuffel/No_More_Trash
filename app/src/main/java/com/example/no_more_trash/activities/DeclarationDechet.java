@@ -107,7 +107,7 @@ public class DeclarationDechet extends AppCompatActivity {
         }
         FileOutputStream fos = openFileOutput("database_Dechets.json",MODE_APPEND);
         if(fos!=null){
-            fos.write(("["+res+"]\n").getBytes());
+            fos.write((""+res+",\n").getBytes());
             fos.close();
         }
     }
