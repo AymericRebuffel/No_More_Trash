@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
@@ -91,7 +93,6 @@ public class Map_Activity extends AppCompatActivity {
                 Marker me=new Marker(map);
                 me.setPosition(new GeoPoint(lattitude,longitude));
                 me.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-                me.setIcon(getDrawable(R.drawable.gpson));
                 map.getOverlays().add(me);
                 mapController.setCenter(me.getPosition());
             }
@@ -118,7 +119,7 @@ public class Map_Activity extends AppCompatActivity {
                     Manifest.permission.INTERNET}, 10);
             return;
         }
-        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+        locationManager.requestLocationUpdates("gps", 5000, 5, locationListener);
         map.invalidate();
         ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(this, items,
                 new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
@@ -135,10 +136,6 @@ public class Map_Activity extends AppCompatActivity {
                 });
         mOverlay.setFocusItemsOnTap(true);
         map.getOverlays().add(mOverlay);
-        if(findPos(items,"me")!=null){
-            mapController.setCenter(findPos(items,"me"));
-        }
-
 
 
     }
