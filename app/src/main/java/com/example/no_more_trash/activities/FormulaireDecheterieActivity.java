@@ -1,15 +1,19 @@
 package com.example.no_more_trash.activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,25 +27,25 @@ import com.example.no_more_trash.models.*;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.no_more_trash.R;
 
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.overlay.Marker;
 
 public class FormulaireDecheterieActivity extends AppCompatActivity {
     private ImageView photo;
     private static final int REQUEST_ID_IMAGE_CAPTURE = 100;
     String titre;
-    GeoPoint geoPoint;
-    private String fournisseur;
-    private LocationManager locationManager = null;
-    private Location localisation = null;
+    Location myLoc;
+    private LocationManager locationManager ;
+    private LocationListener locationListener;
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         ModelDecheterie tmp=new ModelDecheterie();
-        initialiserLocalisation();
 
         setContentView(R.layout.declaration_decheterie);
 
@@ -53,7 +57,36 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
                 Valider(v);
             }
         });
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                myLoc=location;
+            }
 
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(i);
+            }
+        };
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.INTERNET}, 10);
+            return;
+        }
+        locationManager.requestLocationUpdates("gps", 5000, 5, locationListener);
         EditText nom=findViewById(R.id.iddecharge);
         titre=nom.getText().toString();
 
@@ -61,7 +94,7 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
         View frag = findViewById(R.id.FragmentPhoto);
         this.photo = frag.findViewById(R.id.imageView);
         //Iniatilisation de la déchetterie
-        tmp.setLocalisation(geoPoint);
+        tmp.setLocalisation(myLoc);
         tmp.setNom(titre);
         tmp.setImage(photo);
     }
@@ -94,61 +127,11 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
         startActivity(gameActivity);
     }
 
-    @SuppressLint("MissingPermission")
-    private void initialiserLocalisation()
-    {
-        if(locationManager == null)
-        {
-            locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-            assert locationManager != null;
-            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-                createGpsDisabledAlert();
-            Criteria criteres = new Criteria();
-            criteres.setAccuracy(Criteria.ACCURACY_FINE);
-            criteres.setPowerRequirement(Criteria.POWER_HIGH);
-            fournisseur = locationManager.getBestProvider(criteres, true);
-        }
-
-        if(fournisseur != null)
-        {
-            localisation = locationManager.getLastKnownLocation(fournisseur);
-            assert localisation != null;
-            @SuppressLint("DefaultLocale") String coordonnees = String.format("Latitude : %f - Longitude : %f\n", localisation.getLatitude(), localisation.getLongitude());
-            Log.d("GPS", "coordonnees : " + coordonnees);
-        }
-    }
-    private void createGpsDisabledAlert() {
-        AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
-        localBuilder
-                .setMessage("Le GPS est désactivé et il est nécessaire pour connaître la position du déchet, voulez-vous l'activer ?")
-                .setCancelable(false)
-                .setPositiveButton("Oui ",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                                showGpsOptions();
-                            }
-                        }
-                );
-        localBuilder.setNegativeButton("Non ",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                        paramDialogInterface.cancel();
-                        finish();
-                    }
-                }
-        );
-        localBuilder.create().show();
-    }
-
-    private void showGpsOptions() {
-        startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
-        //finish();
-    }
 
    public ModelDecheterie createDecheterie(){
         if(photo!=null){
-            return new ModelDecheterie(geoPoint,titre,photo,"");
+            return new ModelDecheterie(myLoc,titre,photo,"");
         }
-        return new ModelDecheterie(geoPoint,titre,"");
+        return new ModelDecheterie(myLoc,titre,"");
    }
 }

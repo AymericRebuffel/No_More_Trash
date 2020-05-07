@@ -1,5 +1,6 @@
 package com.example.no_more_trash.models;
 
+import android.location.Location;
 import android.media.Image;
 import android.view.Display;
 import android.widget.ImageView;
@@ -7,12 +8,12 @@ import android.widget.ImageView;
 import org.osmdroid.util.GeoPoint;
 
 public class ModelDecheterie {
-    private GeoPoint localisation;
+    private Location localisation;
     private String nom;
     private ImageView image;
     private String description;
 
-    public ModelDecheterie(GeoPoint localisation, String nom, ImageView image, String description) {
+    public ModelDecheterie(Location localisation, String nom, ImageView image, String description) {
         this.localisation = localisation;
         this.nom = nom;
         this.image = image;
@@ -22,13 +23,13 @@ public class ModelDecheterie {
 
     }
 
-    public ModelDecheterie(GeoPoint localisation, String nom, String description) {
+    public ModelDecheterie(Location localisation, String nom, String description) {
         this.localisation = localisation;
         this.nom = nom;
         this.description = description;
     }
 
-    public GeoPoint getLocalisation() {
+    public Location getLocalisation() {
         return localisation;
     }
 
@@ -44,7 +45,7 @@ public class ModelDecheterie {
         return description;
     }
 
-    public void setLocalisation(GeoPoint localisation) {
+    public void setLocalisation(Location localisation) {
         this.localisation = localisation;
     }
 
