@@ -71,11 +71,13 @@ public class Map_Activity extends AppCompatActivity {
     private Location localisation = null;
     private String fournisseur;
     private ArrayList<ModelDechet> dechets = new ArrayList<>();
+    private ArrayList<ModelDecheterie> dechetteries = new ArrayList<>();
     @Override
     public void onCreate(Bundle saveInstantState) {
         super.onCreate(saveInstantState);
         try {
             initDechets();
+            initDechetteries();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -98,9 +100,9 @@ public class Map_Activity extends AppCompatActivity {
         mapController.setZoom(18.0);
         GeoPoint startPoint = new GeoPoint(43.65020, 7.00517);
         mapController.setCenter(startPoint);
-        ModelDecheterie dechet1=new ModelDecheterie(new Marker(map),"dechet1","");
+       /* ModelDecheterie dechet1=new ModelDecheterie(new Marker(map),"dechet1","");
         dechet1.getLocalisation().setPosition(new GeoPoint(45.42521728609235,6.015727887003348));
-        decheteries.add(dechet1);
+        decheteries.add(dechet1);*/
         final Marker mymark = new Marker(map);
         mymark.setPosition(new GeoPoint(43.64950, 7.00517));
         mymark.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
@@ -251,6 +253,18 @@ public class Map_Activity extends AppCompatActivity {
         while (scanner.hasNextLine()){
             object = scanner.nextLine();
             dechets.add(objectMapper.readValue(object,ModelDechet.class));
+        }
+        System.out.println(dechets);
+    }
+
+    private void initDechetteries() throws IOException {
+        FileInputStream fis = openFileInput("database_Dechetteries.json");
+        Scanner scanner = new Scanner(fis);
+        String object;
+        ObjectMapper objectMapper = new ObjectMapper();
+        while (scanner.hasNextLine()){
+            object = scanner.nextLine();
+            dechetteries.add(objectMapper.readValue(object,ModelDecheterie.class));
         }
         System.out.println(dechets);
     }

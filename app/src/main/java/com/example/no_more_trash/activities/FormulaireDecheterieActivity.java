@@ -36,9 +36,13 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.no_more_trash.R;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.Marker;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import static com.example.no_more_trash.activities.DeclarationDechet.CHANNEL_1_ID;
 
@@ -46,7 +50,9 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
     private ImageView photo;
     private static final int REQUEST_ID_IMAGE_CAPTURE = 100;
     String titre;
+    String description;
     Location myLoc;
+    private String fournisseur;
     private LocationManager locationManager ;
     private LocationListener locationListener;
     public static final  String CHANNEL_1_ID = "channel2";
@@ -54,9 +60,8 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initialiserLocalisation();
         getSupportActionBar().hide();
-        ModelDecheterie tmp=new ModelDecheterie();
-
         setContentView(R.layout.declaration_decheterie);
         createNotificationChannel();
         //Boutton de validation du formulaire
@@ -105,10 +110,6 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
         //Gestion de la prise de photo de la décharge
         View frag = findViewById(R.id.FragmentPhoto);
         this.photo = frag.findViewById(R.id.imageView);
-        //Iniatilisation de la déchetterie
-      //  tmp.setLocalisation(myLoc);
-        tmp.setNom(titre);
-        tmp.setImage(photo);
     }
 
 
@@ -136,6 +137,15 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
 
     public void Valider(View view){
         addNotification();
+        ModelDecheterie tmp=new ModelDecheterie();
+        tmp.setLocalisation(myLoc.getLatitude(),myLoc.getLongitude());
+        tmp.setNom(titre);
+        // tmp.setImage(photo);
+        try {
+            writeJson(tmp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Intent gameActivity = new Intent(this, HomeUser.class);
         startActivity(gameActivity);
     }
@@ -149,7 +159,7 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.icon_param)
                 .setContentTitle("Alert")
-                .setContentText("Vous avez déclaré un  déchet qui s'appelle "+titre)
+                .setContentText("Vous avez déclaré une déchetterie : "+titre)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
@@ -178,10 +188,74 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
-  /* public ModelDecheterie createDecheterie(){
-        if(photo!=null){
-            return new ModelDecheterie(myLoc,titre,photo,"");
+    @SuppressLint("MissingPermission")
+    private void initialiserLocalisation()
+    {
+        if(locationManager == null)
+        {
+            locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+            assert locationManager != null;
+            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+                createGpsDisabledAlert();
+            Criteria criteres = new Criteria();
+            criteres.setAccuracy(Criteria.ACCURACY_FINE);
+            criteres.setPowerRequirement(Criteria.POWER_HIGH);
+            fournisseur = locationManager.getBestProvider(criteres, true);
         }
-        return new ModelDecheterie(myLoc,titre,"");
-   }*/
+
+        if(fournisseur != null)
+        {
+            myLoc = locationManager.getLastKnownLocation(fournisseur);
+            String coordonnees;
+            if(myLoc!=null) {
+                coordonnees = String.format("Latitude : %f - Longitude : %f\n", myLoc.getLatitude(), myLoc.getLongitude());
+                Log.d("GPS", "coordonnees : " + coordonnees);
+            }
+        }
+    }
+
+    private void createGpsDisabledAlert() {
+        Log.d("gps", "test");
+        AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
+        localBuilder
+                .setMessage("Le GPS est désactivé et il est nécessaire pour connaître la position du déchet, voulez-vous l'activer ?")
+                .setCancelable(false)
+                .setPositiveButton("Oui ",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                                showGpsOptions();
+                            }
+                        }
+                );
+        localBuilder.setNegativeButton("Non ",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                        paramDialogInterface.cancel();
+                        finish();
+                    }
+                }
+        );
+        localBuilder.create().show();
+    }
+
+    private void showGpsOptions() {
+        startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
+    }
+
+    public void writeJson(ModelDecheterie decheterie) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String res = "";
+        try {
+            res = mapper.writeValueAsString(decheterie);
+            System.out.println(mapper.writeValueAsString(decheterie));
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        FileOutputStream fos = openFileOutput("database_Dechetteries.json",MODE_APPEND);
+        if(fos!=null){
+            fos.write((""+res+"\n").getBytes());
+            fos.close();
+        }
+    }
 }
