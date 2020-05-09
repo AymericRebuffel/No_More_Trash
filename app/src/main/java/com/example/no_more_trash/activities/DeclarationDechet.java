@@ -1,6 +1,9 @@
 package com.example.no_more_trash.activities;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +11,7 @@ import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -19,6 +23,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.example.no_more_trash.R;
 import com.example.no_more_trash.models.ModelDechet;
@@ -52,6 +58,8 @@ public class DeclarationDechet extends AppCompatActivity {
     private String taille;
     private String type;
     private static final int REQUEST_ID_IMAGE_CAPTURE = 100;
+    public static final  String CHANNEL_1_ID = "channel1";
+    int notificationId =1;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -59,6 +67,7 @@ public class DeclarationDechet extends AppCompatActivity {
         getSupportActionBar().hide();
         Log.d("Start","Declaration dechet");
         initialiserLocalisation();
+        createNotificationChannel();
         //Log.d("Localisation : ", localisation.toString());
         setContentView(R.layout.declaration_dechet);
         Button valider = findViewById(R.id.Validation);
@@ -89,10 +98,50 @@ public class DeclarationDechet extends AppCompatActivity {
         taille = spinnerTaille.getSelectedItem().toString();
         Spinner spinnerType = findViewById(R.id.spinnerType);
         type = spinnerType.getSelectedItem().toString();
+        addNotification();
         ModelDechet modelDechet = new ModelDechet(/*photo,*/localisation,date,taille,type);
         writeJson(modelDechet);
         Intent gameActivity = new Intent(DeclarationDechet.this, HomeUser.class);
         startActivity(gameActivity);
+    }
+
+    private void addNotification() {
+
+        Intent intent = new Intent(this, DeclarationDechet.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.icon_param)
+                .setContentTitle("Alert")
+                .setContentText("Vous avez déclaré un "+taille+" déchet de type "+type)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+// notificationId is a unique int for each notification that you must define
+        notificationManager.notify(notificationId, builder.build());
+
+        notificationId++;
+
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = ("Channel_1");
+            String description =("Channel_1_description");
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_1_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     public void writeJson(ModelDechet dechet) throws IOException {
