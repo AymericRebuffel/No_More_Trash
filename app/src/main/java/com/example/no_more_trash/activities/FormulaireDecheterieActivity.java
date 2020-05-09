@@ -2,6 +2,9 @@ package com.example.no_more_trash.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +14,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -28,11 +32,15 @@ import com.example.no_more_trash.models.*;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.example.no_more_trash.R;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.Marker;
+
+import static com.example.no_more_trash.activities.DeclarationDechet.CHANNEL_1_ID;
 
 public class FormulaireDecheterieActivity extends AppCompatActivity {
     private ImageView photo;
@@ -41,6 +49,8 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
     Location myLoc;
     private LocationManager locationManager ;
     private LocationListener locationListener;
+    public static final  String CHANNEL_1_ID = "channel2";
+    int notificationId =1;
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +58,14 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
         ModelDecheterie tmp=new ModelDecheterie();
 
         setContentView(R.layout.declaration_decheterie);
-
+        createNotificationChannel();
         //Boutton de validation du formulaire
         Button valider=findViewById(R.id.ValidationD);
         valider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EditText nom=findViewById(R.id.iddecharge);
+                titre=nom.getText().toString();
                 Valider(v);
             }
         });
@@ -123,11 +135,49 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
     }
 
     public void Valider(View view){
+        addNotification();
         Intent gameActivity = new Intent(this, HomeUser.class);
         startActivity(gameActivity);
     }
 
+    private void addNotification() {
 
+        Intent intent = new Intent(this, FormulaireDecheterieActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.icon_param)
+                .setContentTitle("Alert")
+                .setContentText("Vous avez déclaré un  déchet qui s'appelle "+titre)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+// notificationId is a unique int for each notification that you must define
+        notificationManager.notify(notificationId, builder.build());
+
+        notificationId++;
+
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = ("Channel_1");
+            String description =("Channel_1_description");
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_1_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
    public ModelDecheterie createDecheterie(){
         if(photo!=null){
             return new ModelDecheterie(myLoc,titre,photo,"");
