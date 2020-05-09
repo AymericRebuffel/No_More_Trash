@@ -98,8 +98,8 @@ public class DeclarationDechet extends AppCompatActivity {
         taille = spinnerTaille.getSelectedItem().toString();
         Spinner spinnerType = findViewById(R.id.spinnerType);
         type = spinnerType.getSelectedItem().toString();
+        ModelDechet modelDechet = new ModelDechet(/*photo,*/localisation.getLatitude(),localisation.getLongitude(),date,taille,type);
         addNotification();
-        ModelDechet modelDechet = new ModelDechet(/*photo,*/localisation,date,taille,type);
         writeJson(modelDechet);
         Intent gameActivity = new Intent(DeclarationDechet.this, HomeUser.class);
         startActivity(gameActivity);
@@ -156,7 +156,7 @@ public class DeclarationDechet extends AppCompatActivity {
         }
         FileOutputStream fos = openFileOutput("database_Dechets.json",MODE_APPEND);
         if(fos!=null){
-            fos.write((""+res+",\n").getBytes());
+            fos.write((""+res+"\n").getBytes());
             fos.close();
         }
     }

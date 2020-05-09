@@ -27,6 +27,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.no_more_trash.R;
+import com.example.no_more_trash.models.ModelDechet;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.no_more_trash.models.ModelDecheterie;
 
 import org.osmdroid.api.IGeoPoint;
@@ -45,8 +48,13 @@ import org.osmdroid.views.overlay.infowindow.BasicInfoWindow;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Map_Activity extends AppCompatActivity {
     private MapView map;
@@ -60,10 +68,17 @@ public class Map_Activity extends AppCompatActivity {
     private ArrayList items;
     private ArrayList<ModelDecheterie> decheteries;
     private ArrayList<GeoPoint> trajet;
-
+    private Location localisation = null;
+    private String fournisseur;
+    private ArrayList<ModelDechet> dechets = new ArrayList<>();
     @Override
     public void onCreate(Bundle saveInstantState) {
         super.onCreate(saveInstantState);
+        try {
+            initDechets();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         getSupportActionBar().hide();
         Configuration.getInstance().load(getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
         setContentView(R.layout.map_decheterie);
@@ -143,6 +158,8 @@ public class Map_Activity extends AppCompatActivity {
                         return false;
                     }
                 });
+
+
         mOverlay.setFocusItemsOnTap(true);
         map.getOverlays().add(mOverlay);
 
@@ -199,4 +216,42 @@ public class Map_Activity extends AppCompatActivity {
             });
     }
 
+    private void createGpsDisabledAlert() {
+        AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
+        localBuilder
+                .setMessage("Le GPS est désactivé et il est nécessaire pour connaître la position du déchet, voulez-vous l'activer ?")
+                .setCancelable(false)
+                .setPositiveButton("Oui ",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                                showGpsOptions();
+                            }
+                        }
+                );
+        localBuilder.setNegativeButton("Non ",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                        paramDialogInterface.cancel();
+                        finish();
+                    }
+                }
+        );
+        localBuilder.create().show();
+    }
+    private void showGpsOptions() {
+        startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
+        //finish();
+    }
+
+    private void initDechets() throws IOException {
+        FileInputStream fis = openFileInput("database_Dechets.json");
+        Scanner scanner = new Scanner(fis);
+        String object;
+        ObjectMapper objectMapper = new ObjectMapper();
+        while (scanner.hasNextLine()){
+            object = scanner.nextLine();
+            dechets.add(objectMapper.readValue(object,ModelDechet.class));
+        }
+        System.out.println(dechets);
+    }
 }
