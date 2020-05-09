@@ -6,30 +6,44 @@ import android.view.Display;
 import android.widget.ImageView;
 
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 
 public class ModelDecheterie {
-    private Location localisation;
+    private Marker localisation;
     private String nom;
     private ImageView image;
     private String description;
 
-    public ModelDecheterie(Location localisation, String nom, ImageView image, String description) {
+    public ModelDecheterie(Marker localisation, String nom, ImageView image, String description) {
         this.localisation = localisation;
         this.nom = nom;
         this.image = image;
         this.description = description;
+        localisation.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                lancevue();
+                return true;
+            }
+        });
     }
+
+    private void lancevue() {
+    }
+
+
     public ModelDecheterie(){
 
     }
 
-    public ModelDecheterie(Location localisation, String nom, String description) {
+    public ModelDecheterie(Marker localisation, String nom, String description) {
         this.localisation = localisation;
         this.nom = nom;
         this.description = description;
     }
 
-    public Location getLocalisation() {
+    public Marker getLocalisation() {
         return localisation;
     }
 
@@ -45,7 +59,7 @@ public class ModelDecheterie {
         return description;
     }
 
-    public void setLocalisation(Location localisation) {
+    public void setLocalisation(Marker localisation) {
         this.localisation = localisation;
     }
 

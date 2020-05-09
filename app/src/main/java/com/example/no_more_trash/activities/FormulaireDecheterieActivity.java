@@ -106,7 +106,7 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
         View frag = findViewById(R.id.FragmentPhoto);
         this.photo = frag.findViewById(R.id.imageView);
         //Iniatilisation de la déchetterie
-        tmp.setLocalisation(myLoc);
+      //  tmp.setLocalisation(myLoc);
         tmp.setNom(titre);
         tmp.setImage(photo);
     }
@@ -178,10 +178,10 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
-   public ModelDecheterie createDecheterie(){
+  /* public ModelDecheterie createDecheterie(){
         if(photo!=null){
             return new ModelDecheterie(myLoc,titre,photo,"");
         }
         return new ModelDecheterie(myLoc,titre,"");
-   }
+   }*/
 }
