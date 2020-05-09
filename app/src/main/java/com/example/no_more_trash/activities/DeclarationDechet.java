@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -107,6 +108,7 @@ public class DeclarationDechet extends AppCompatActivity {
 
     private void addNotification() {
 
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.trash);
         Intent intent = new Intent(this, DeclarationDechet.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
@@ -116,6 +118,8 @@ public class DeclarationDechet extends AppCompatActivity {
                 .setContentTitle("Alert")
                 .setContentText("Vous avez déclaré un "+taille+" déchet de type "+type)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setLargeIcon(bitmap)
+                .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap).bigLargeIcon(null))
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 

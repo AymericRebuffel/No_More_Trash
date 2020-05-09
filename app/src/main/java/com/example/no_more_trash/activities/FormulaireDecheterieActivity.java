@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -152,6 +153,7 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
 
     private void addNotification() {
 
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.trash);
         Intent intent = new Intent(this, FormulaireDecheterieActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
@@ -161,6 +163,8 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
                 .setContentTitle("Alert")
                 .setContentText("Vous avez déclaré une déchetterie : "+titre)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setLargeIcon(bitmap)
+                .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap).bigLargeIcon(null))
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
