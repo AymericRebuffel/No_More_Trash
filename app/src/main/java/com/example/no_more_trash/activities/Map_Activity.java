@@ -117,7 +117,7 @@ public class Map_Activity extends AppCompatActivity {
                 mLocationOverlay.enableMyLocation();
                 map.setMultiTouchControls(true);
                 map.getOverlays().add(mLocationOverlay);
-                mapController.setCenter(mLocationOverlay.getMyLocation());
+               // mapController.setCenter(mLocationOverlay.getMyLocation());
             }
 
             @Override
@@ -187,6 +187,16 @@ public class Map_Activity extends AppCompatActivity {
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        dechets.clear();
+        decheteries.clear();
+        try {
+            initDechetteries();
+            initDechets();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        placeDecheterie();
+        placeDechet();
         map.onResume();
     }
 
@@ -255,5 +265,4 @@ public class Map_Activity extends AppCompatActivity {
         }
         System.out.println(dechets);
     }
-
 }
