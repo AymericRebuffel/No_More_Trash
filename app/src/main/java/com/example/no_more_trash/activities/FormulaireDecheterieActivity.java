@@ -53,7 +53,7 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
     String titre;
     String description;
     Location myLoc;
-    private String fournisseur;
+   // private String fournisseur;
     private LocationManager locationManager ;
     private LocationListener locationListener;
     public static final  String CHANNEL_1_ID = "channel2";
@@ -61,7 +61,7 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initialiserLocalisation();
+      //  initialiserLocalisation();
         getSupportActionBar().hide();
         setContentView(R.layout.declaration_decheterie);
         createNotificationChannel();
@@ -192,7 +192,7 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
-    @SuppressLint("MissingPermission")
+   /* @SuppressLint("MissingPermission")
     private void initialiserLocalisation()
     {
         if(locationManager == null)
@@ -244,7 +244,7 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
 
     private void showGpsOptions() {
         startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
-    }
+    }*/
 
     public void writeJson(ModelDecheterie decheterie) throws IOException {
         ObjectMapper mapper = new ObjectMapper();

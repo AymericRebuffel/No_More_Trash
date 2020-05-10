@@ -1,5 +1,6 @@
 package com.example.no_more_trash.activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -7,14 +8,17 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +28,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -52,22 +57,23 @@ import java.util.Date;
 
 public class DeclarationDechet extends AppCompatActivity {
     private ImageView photo;
-    private LocationManager locationManager = null;
-    private Location localisation = null;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private Location mlocalisation;
     private String fournisseur;
     private Date date;
     private String taille;
     private String type;
     private static final int REQUEST_ID_IMAGE_CAPTURE = 100;
-    public static final  String CHANNEL_1_ID = "channel1";
-    int notificationId =1;
+    public static final String CHANNEL_1_ID = "channel1";
+    int notificationId = 1;
 
     @Override
-    protected void onCreate (Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        Log.d("Start","Declaration dechet");
-        initialiserLocalisation();
+        Log.d("Start", "Declaration dechet");
+        // initialiserLocalisation();
         createNotificationChannel();
         //Log.d("Localisation : ", localisation.toString());
         setContentView(R.layout.declaration_dechet);
@@ -90,16 +96,60 @@ public class DeclarationDechet extends AppCompatActivity {
             }
         });
         this.photo = findViewById(R.id.imageView);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                mlocalisation = location;
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(i);
+            }
+        };
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.INTERNET}, 10);
+        }
+        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
     }
 
     public void Valider(View view) throws IOException {
-        if(localisation!=null)
-            date = new Date(localisation.getTime());
+        if(mlocalisation!=null)
+            date = new Date(mlocalisation.getTime());
         Spinner spinnerTaille = findViewById(R.id.spinnerTaille);
         taille = spinnerTaille.getSelectedItem().toString();
         Spinner spinnerType = findViewById(R.id.spinnerType);
         type = spinnerType.getSelectedItem().toString();
-        ModelDechet modelDechet = new ModelDechet(/*photo,*/localisation.getLatitude(),localisation.getLongitude(),date,taille,type);
+        ModelDechet modelDechet = new ModelDechet(/*photo,*/mlocalisation.getLatitude(),mlocalisation.getLongitude(),date,taille,type);
         addNotification();
         writeJson(modelDechet);
         Intent gameActivity = new Intent(DeclarationDechet.this, HomeUser.class);
@@ -203,10 +253,10 @@ public class DeclarationDechet extends AppCompatActivity {
 
         if(fournisseur != null)
         {
-            localisation = locationManager.getLastKnownLocation(fournisseur);
+            mlocalisation = locationManager.getLastKnownLocation(fournisseur);
             String coordonnees;
-            if(localisation!=null) {
-                coordonnees = String.format("Latitude : %f - Longitude : %f\n", localisation.getLatitude(), localisation.getLongitude());
+            if(mlocalisation!=null) {
+                coordonnees = String.format("Latitude : %f - Longitude : %f\n", mlocalisation.getLatitude(), mlocalisation.getLongitude());
                 Log.d("GPS", "coordonnees : " + coordonnees);
             }
         }

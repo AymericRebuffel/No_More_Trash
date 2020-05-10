@@ -204,7 +204,7 @@ public class Map_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 locationManager.requestLocationUpdates("gps", 5000, 3, locationListener);
-                map.getController().setCenter(mLocationOverlay.getMyLocation());
+
             }
 
             });
