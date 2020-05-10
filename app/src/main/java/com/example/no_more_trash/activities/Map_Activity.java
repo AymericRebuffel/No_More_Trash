@@ -63,8 +63,8 @@ public class Map_Activity extends AppCompatActivity {
     private LocationListener locationListener;
     private Button center_map;
     private double longitude;
-    private  double lattitude;
-    private  MyLocationNewOverlay mLocationOverlay;
+    private double lattitude;
+    private MyLocationNewOverlay mLocationOverlay;
     private ArrayList items;
     private ArrayList<ModelDecheterie> decheteries;
     private ArrayList<GeoPoint> trajet;
@@ -72,6 +72,7 @@ public class Map_Activity extends AppCompatActivity {
     private String fournisseur;
     private ArrayList<ModelDechet> dechets = new ArrayList<>();
     private ArrayList<ModelDecheterie> dechetteries = new ArrayList<>();
+
     @Override
     public void onCreate(Bundle saveInstantState) {
         super.onCreate(saveInstantState);
@@ -86,36 +87,28 @@ public class Map_Activity extends AppCompatActivity {
         setContentView(R.layout.map_decheterie);
         items = new ArrayList<OverlayItem>();
         textView = findViewById(R.id.textView2);
-        decheteries=new ArrayList<ModelDecheterie>();
+        decheteries = new ArrayList<ModelDecheterie>();
         map = findViewById(R.id.map);
-        center_map=findViewById(R.id.center_map);
+        center_map = findViewById(R.id.center_map);
         map.setTileSource(TileSourceFactory.MAPNIK);
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
-        trajet=new ArrayList<GeoPoint>();
-        OverlayItem point =new OverlayItem("titre","descri",new GeoPoint(45.31765771762817,5.922782763890293));
-        trajet.add(new GeoPoint(point.getPoint().getLatitude(),point.getPoint().getLongitude()));
+        trajet = new ArrayList<GeoPoint>();
+        OverlayItem point = new OverlayItem("titre", "descri", new GeoPoint(45.31765771762817, 5.922782763890293));
+        trajet.add(new GeoPoint(point.getPoint().getLatitude(), point.getPoint().getLongitude()));
         items.add(point);
         final IMapController mapController = map.getController();
         mapController.setZoom(18.0);
         GeoPoint startPoint = new GeoPoint(43.65020, 7.00517);
         mapController.setCenter(startPoint);
-       /* ModelDecheterie dechet1=new ModelDecheterie(new Marker(map),"dechet1","");
-        dechet1.getLocalisation().setPosition(new GeoPoint(45.42521728609235,6.015727887003348));
-        decheteries.add(dechet1);*/
-        final Marker mymark = new Marker(map);
-        mymark.setPosition(new GeoPoint(43.64950, 7.00517));
-        mymark.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-        mymark.setIcon(getResources().getDrawable(R.drawable.trash));
-       // map.getOverlays().add(mymark);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                longitude=location.getLongitude();
-                lattitude=location.getLatitude();
+                longitude = location.getLongitude();
+                lattitude = location.getLatitude();
                 textView.append("\n " + longitude + " " + lattitude);
-                mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getApplicationContext()),map);
+                mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(getApplicationContext()), map);
                 mLocationOverlay.enableMyLocation();
                 map.setMultiTouchControls(true);
                 map.getOverlays().add(mLocationOverlay);
@@ -124,12 +117,10 @@ public class Map_Activity extends AppCompatActivity {
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-
             }
 
             @Override
             public void onProviderEnabled(String provider) {
-
             }
 
             @Override
@@ -143,7 +134,7 @@ public class Map_Activity extends AppCompatActivity {
                     Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.INTERNET}, 10);
             return;
-        }else{
+        } else {
             setpos();
         }
         locationManager.requestLocationUpdates("gps", 5000, 5, locationListener);
@@ -164,7 +155,6 @@ public class Map_Activity extends AppCompatActivity {
 
         mOverlay.setFocusItemsOnTap(true);
         map.getOverlays().add(mOverlay);
-
         Polyline line = new Polyline();
         line.setTitle("Un trajet");
         line.setSubDescription(Polyline.class.getCanonicalName());
@@ -174,14 +164,24 @@ public class Map_Activity extends AppCompatActivity {
         line.setGeodesic(true);
         line.setInfoWindow(new BasicInfoWindow(R.layout.bonuspack_bubble, map));
 
-       map.invalidate();
-
-
-
+        map.invalidate();
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         map.onResume();
     }
 
@@ -198,51 +198,16 @@ public class Map_Activity extends AppCompatActivity {
         map.getOverlays().add((Overlay) ltmp);
     }
 
-    public IGeoPoint findPos(ArrayList<OverlayItem> list,String tag){
-        for(int i=0;i<list.size();i++){
-            if(list.get(i).getTitle().equals(tag)){
-                return list.get(i).getPoint();
-            }
-        }
-        return null;
-    }
     @SuppressLint("MissingPermission")
     private void setpos(){
         center_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+                locationManager.requestLocationUpdates("gps", 5000, 3, locationListener);
                 map.getController().setCenter(mLocationOverlay.getMyLocation());
             }
 
             });
-    }
-
-    private void createGpsDisabledAlert() {
-        AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
-        localBuilder
-                .setMessage("Le GPS est désactivé et il est nécessaire pour connaître la position du déchet, voulez-vous l'activer ?")
-                .setCancelable(false)
-                .setPositiveButton("Oui ",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                                showGpsOptions();
-                            }
-                        }
-                );
-        localBuilder.setNegativeButton("Non ",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                        paramDialogInterface.cancel();
-                        finish();
-                    }
-                }
-        );
-        localBuilder.create().show();
-    }
-    private void showGpsOptions() {
-        startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
-        //finish();
     }
 
     private void initDechets() throws IOException {
@@ -268,4 +233,5 @@ public class Map_Activity extends AppCompatActivity {
         }
         System.out.println(dechets);
     }
+
 }
