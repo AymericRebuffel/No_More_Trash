@@ -93,7 +93,7 @@ public class Map_Activity extends AppCompatActivity {
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
         trajet = new ArrayList<GeoPoint>();
-        OverlayItem point = new OverlayItem("titre", "descri", new GeoPoint(45.31765771762817, 5.922782763890293));
+        OverlayItem point = new OverlayItem("dechet_organique", "moyen", new GeoPoint(45.31765771762817, 5.922782763890293));
         trajet.add(new GeoPoint(point.getPoint().getLatitude(), point.getPoint().getLongitude()));
         items.add(point);
         if(dechets.size()!=0){
@@ -104,8 +104,6 @@ public class Map_Activity extends AppCompatActivity {
         }
         final IMapController mapController = map.getController();
         mapController.setZoom(18.0);
-        GeoPoint startPoint = new GeoPoint(43.65020, 7.00517);
-        mapController.setCenter(startPoint);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -117,7 +115,6 @@ public class Map_Activity extends AppCompatActivity {
                 mLocationOverlay.enableMyLocation();
                 map.setMultiTouchControls(true);
                 map.getOverlays().add(mLocationOverlay);
-               // mapController.setCenter(mLocationOverlay.getMyLocation());
             }
 
             @Override
@@ -143,6 +140,28 @@ public class Map_Activity extends AppCompatActivity {
             setpos();
         }
         locationManager.requestLocationUpdates("gps", 5000, 5, locationListener);
+        Polyline line = new Polyline();
+        line.setTitle("Un trajet");
+        line.setSubDescription(Polyline.class.getCanonicalName());
+        line.setWidth(10f);
+        line.setColor(Color.RED);
+        line.setPoints(trajet);
+        line.setGeodesic(true);
+        line.setInfoWindow(new BasicInfoWindow(R.layout.bonuspack_bubble, map));
+        map.getOverlayManager().add(line) ;
+        map.invalidate();
+        Marker s=new Marker(map);
+        s.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                goTomarker();
+                return false;
+            }
+        });
+        s.setPosition(new GeoPoint(45.80828947812799,2.789005057397027));
+        mapController.setCenter(s.getPosition());
+        map.getOverlays().add(s);
+        map.invalidate();
         ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(this, items,
                 new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
                     @Override
@@ -160,16 +179,6 @@ public class Map_Activity extends AppCompatActivity {
 
         mOverlay.setFocusItemsOnTap(true);
         map.getOverlays().add(mOverlay);
-        Polyline line = new Polyline();
-        line.setTitle("Un trajet");
-        line.setSubDescription(Polyline.class.getCanonicalName());
-        line.setWidth(10f);
-        line.setColor(Color.RED);
-        line.setPoints(trajet);
-        line.setGeodesic(true);
-        line.setInfoWindow(new BasicInfoWindow(R.layout.bonuspack_bubble, map));
-
-        map.invalidate();
     }
 
     @Override
@@ -238,7 +247,7 @@ public class Map_Activity extends AppCompatActivity {
     }
     private void placeDechet(){
         for(int i=0;i<dechets.size();i++){
-            OverlayItem tmp=new OverlayItem("dechet "+i, "descri", new GeoPoint(dechets.get(i).latitude, dechets.get(i).longitude));
+            OverlayItem tmp=new OverlayItem("dechet "+dechets.get(i).type, dechets.get(i).taille, new GeoPoint(dechets.get(i).latitude, dechets.get(i).longitude));
             items.add(tmp);
         }
     }
@@ -264,5 +273,9 @@ public class Map_Activity extends AppCompatActivity {
             decheteries.add(objectMapper.readValue(object,ModelDecheterie.class));
         }
         System.out.println(dechets);
+    }
+    private void goTomarker(){
+        Intent gameActivity = new Intent(this, MarkerDechet.class);
+        startActivity(gameActivity);
     }
 }
