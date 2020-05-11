@@ -21,7 +21,7 @@ public class FragmentWeb extends Fragment {
         WebView page=(WebView)v.findViewById(R.id.pageweb);
         page.getSettings().setJavaScriptEnabled(true);
         page.setWebViewClient(new WebViewClient());
-        page.loadUrl("https://dechets-infos.com/");
+        page.loadUrl("https://twitter.com/Dechets_Infos");
         return v;
     }
 }

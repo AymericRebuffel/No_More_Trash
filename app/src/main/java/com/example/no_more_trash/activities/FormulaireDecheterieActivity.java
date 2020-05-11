@@ -112,6 +112,20 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
         View frag = findViewById(R.id.FragmentPhoto);
         this.photo = frag.findViewById(R.id.imageView);
     }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+    }
 
 
     @Override
@@ -192,59 +206,7 @@ public class FormulaireDecheterieActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
-   /* @SuppressLint("MissingPermission")
-    private void initialiserLocalisation()
-    {
-        if(locationManager == null)
-        {
-            locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-            assert locationManager != null;
-            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-                createGpsDisabledAlert();
-            Criteria criteres = new Criteria();
-            criteres.setAccuracy(Criteria.ACCURACY_FINE);
-            criteres.setPowerRequirement(Criteria.POWER_HIGH);
-            fournisseur = locationManager.getBestProvider(criteres, true);
-        }
 
-        if(fournisseur != null)
-        {
-            myLoc = locationManager.getLastKnownLocation(fournisseur);
-            String coordonnees;
-            if(myLoc!=null) {
-                coordonnees = String.format("Latitude : %f - Longitude : %f\n", myLoc.getLatitude(), myLoc.getLongitude());
-                Log.d("GPS", "coordonnees : " + coordonnees);
-            }
-        }
-    }
-
-    private void createGpsDisabledAlert() {
-        Log.d("gps", "test");
-        AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
-        localBuilder
-                .setMessage("Le GPS est désactivé et il est nécessaire pour connaître la position du déchet, voulez-vous l'activer ?")
-                .setCancelable(false)
-                .setPositiveButton("Oui ",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                                showGpsOptions();
-                            }
-                        }
-                );
-        localBuilder.setNegativeButton("Non ",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                        paramDialogInterface.cancel();
-                        finish();
-                    }
-                }
-        );
-        localBuilder.create().show();
-    }
-
-    private void showGpsOptions() {
-        startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
-    }*/
 
     public void writeJson(ModelDecheterie decheterie) throws IOException {
         ObjectMapper mapper = new ObjectMapper();

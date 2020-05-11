@@ -71,11 +71,11 @@ public class Map_Activity extends AppCompatActivity {
     private Location localisation = null;
     private String fournisseur;
     private ArrayList<ModelDechet> dechets = new ArrayList<>();
-    private ArrayList<ModelDecheterie> dechetteries = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle saveInstantState) {
         super.onCreate(saveInstantState);
+        decheteries = new ArrayList<ModelDecheterie>();
         try {
             initDechets();
             initDechetteries();
@@ -87,7 +87,6 @@ public class Map_Activity extends AppCompatActivity {
         setContentView(R.layout.map_decheterie);
         items = new ArrayList<OverlayItem>();
         textView = findViewById(R.id.textView2);
-        decheteries = new ArrayList<ModelDecheterie>();
         map = findViewById(R.id.map);
         center_map = findViewById(R.id.center_map);
         map.setTileSource(TileSourceFactory.MAPNIK);
@@ -97,6 +96,12 @@ public class Map_Activity extends AppCompatActivity {
         OverlayItem point = new OverlayItem("titre", "descri", new GeoPoint(45.31765771762817, 5.922782763890293));
         trajet.add(new GeoPoint(point.getPoint().getLatitude(), point.getPoint().getLongitude()));
         items.add(point);
+        if(dechets.size()!=0){
+            placeDechet();
+        }
+        if(decheteries.size()!=0){
+            placeDecheterie();
+        }
         final IMapController mapController = map.getController();
         mapController.setZoom(18.0);
         GeoPoint startPoint = new GeoPoint(43.65020, 7.00517);
@@ -112,7 +117,7 @@ public class Map_Activity extends AppCompatActivity {
                 mLocationOverlay.enableMyLocation();
                 map.setMultiTouchControls(true);
                 map.getOverlays().add(mLocationOverlay);
-                mapController.setCenter(mLocationOverlay.getMyLocation());
+               // mapController.setCenter(mLocationOverlay.getMyLocation());
             }
 
             @Override
@@ -182,6 +187,16 @@ public class Map_Activity extends AppCompatActivity {
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        dechets.clear();
+        decheteries.clear();
+        try {
+            initDechetteries();
+            initDechets();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        placeDecheterie();
+        placeDechet();
         map.onResume();
     }
 
@@ -203,7 +218,7 @@ public class Map_Activity extends AppCompatActivity {
         center_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                locationManager.requestLocationUpdates("gps", 5000, 3, locationListener);
+                locationManager.requestLocationUpdates("gps", 500, 3, locationListener);
 
             }
 
@@ -221,6 +236,23 @@ public class Map_Activity extends AppCompatActivity {
         }
         System.out.println(dechets);
     }
+    private void placeDechet(){
+        for(int i=0;i<dechets.size();i++){
+            OverlayItem tmp=new OverlayItem("dechet "+i, "descri", new GeoPoint(dechets.get(i).latitude, dechets.get(i).longitude));
+            items.add(tmp);
+        }
+    }
+    private void placeDecheterie(){
+        for(int i=0;i<decheteries.size();i++){
+            Marker tmp=new Marker(map);
+            tmp.setTitle(decheteries.get(i).nom);
+            tmp.setPosition(new GeoPoint(decheteries.get(i).latitude, decheteries.get(i).longitude));
+            tmp.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+            tmp.setIcon(getResources().getDrawable(R.drawable.trash));
+            map.getOverlays().add(tmp);
+            map.invalidate();
+        }
+    }
 
     private void initDechetteries() throws IOException {
         FileInputStream fis = openFileInput("database_Dechetteries.json");
@@ -229,9 +261,8 @@ public class Map_Activity extends AppCompatActivity {
         ObjectMapper objectMapper = new ObjectMapper();
         while (scanner.hasNextLine()){
             object = scanner.nextLine();
-            dechetteries.add(objectMapper.readValue(object,ModelDecheterie.class));
+            decheteries.add(objectMapper.readValue(object,ModelDecheterie.class));
         }
         System.out.println(dechets);
     }
-
 }
