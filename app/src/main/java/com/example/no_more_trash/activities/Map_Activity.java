@@ -154,7 +154,7 @@ public class Map_Activity extends AppCompatActivity {
         s.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker, MapView mapView) {
-                goTomarker();
+                goTomarker(null);
                 return false;
             }
         });
@@ -247,8 +247,19 @@ public class Map_Activity extends AppCompatActivity {
     }
     private void placeDechet(){
         for(int i=0;i<dechets.size();i++){
-            OverlayItem tmp=new OverlayItem("dechet "+dechets.get(i).type, dechets.get(i).taille, new GeoPoint(dechets.get(i).latitude, dechets.get(i).longitude));
-            items.add(tmp);
+            Marker tmp=new Marker(map);
+            tmp.setPosition(new GeoPoint(dechets.get(i).latitude, dechets.get(i).longitude));
+            tmp.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker, MapView mapView) {
+                    goTomarker(null);
+                    return false;
+                }
+            });
+            map.getOverlays().add(tmp);
+            map.invalidate();
+           /* OverlayItem tmp=new OverlayItem("dechet "+dechets.get(i).type, dechets.get(i).taille, new GeoPoint(dechets.get(i).latitude, dechets.get(i).longitude));
+            items.add(tmp);*/
         }
     }
     private void placeDecheterie(){
@@ -274,7 +285,7 @@ public class Map_Activity extends AppCompatActivity {
         }
         System.out.println(dechets);
     }
-    private void goTomarker(){
+    private void goTomarker(ModelDechet dechet){
         Intent gameActivity = new Intent(this, MarkerDechet.class);
         startActivity(gameActivity);
     }
