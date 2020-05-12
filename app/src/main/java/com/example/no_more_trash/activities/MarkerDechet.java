@@ -2,6 +2,8 @@ package com.example.no_more_trash.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,23 +12,31 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.no_more_trash.R;
 import com.example.no_more_trash.models.ModelDechet;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class MarkerDechet extends AppCompatActivity {
     private Button oui;
     private Button non;
     private TextView textView;
-    ArrayList<ModelDechet> dechets;
+    ModelDechet dechet;
+    private Intent intent;
 
     @Override
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.marker_dechet);
+        intent=getIntent();
         oui=findViewById(R.id.oui_marker);
         non=findViewById(R.id.non_marker);
         textView=findViewById(R.id.textView3);
-        dechets=new ArrayList<ModelDechet>();
+        if(intent.hasExtra("Cdechet")){
+            dechet=intent.getParcelableExtra("Cdechet");
+        }
         oui.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,13 +52,17 @@ public class MarkerDechet extends AppCompatActivity {
     }
 
     private void nettoyer(){
+        dechet.setCleaned(true);
         Intent swap=new Intent(this,Map_Activity.class);
-        startActivity(swap);
+        swap.putExtra("result",(Parcelable) dechet);
+        MarkerDechet.this.setResult(1,swap);
+        MarkerDechet.this.finish();
     }
 
     private void pNettoyer(){
         Intent swap=new Intent(this,Map_Activity.class);
-        startActivity(swap);
+        MarkerDechet.this.setResult(0,swap);
+        MarkerDechet.this.finish();
     }
 
 }

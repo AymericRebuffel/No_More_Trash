@@ -62,6 +62,7 @@ public class DeclarationDechet extends AppCompatActivity {
     private Location mlocalisation;
     private String fournisseur;
     private Date date;
+    final boolean clean=false;
     private String taille;
     private String type;
     private static final int REQUEST_ID_IMAGE_CAPTURE = 100;
@@ -149,7 +150,7 @@ public class DeclarationDechet extends AppCompatActivity {
         taille = spinnerTaille.getSelectedItem().toString();
         Spinner spinnerType = findViewById(R.id.spinnerType);
         type = spinnerType.getSelectedItem().toString();
-        ModelDechet modelDechet = new ModelDechet(/*photo,*/mlocalisation.getLatitude(),mlocalisation.getLongitude(),date,taille,type);
+        ModelDechet modelDechet = new ModelDechet(/*photo,*/mlocalisation.getLatitude(),mlocalisation.getLongitude(),date,taille,type,false);
         addNotification();
         writeJson(modelDechet);
         Intent gameActivity = new Intent(DeclarationDechet.this, HomeUser.class);

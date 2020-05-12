@@ -15,6 +15,7 @@ public class ModelDecheterie {
     public double latitude;
     public double longitude;
     public String nom;
+    public static  final String ID="-2";
     /*private ImageView image;
     public String description;*/
 

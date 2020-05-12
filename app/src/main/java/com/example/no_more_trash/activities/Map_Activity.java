@@ -15,6 +15,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -68,17 +69,18 @@ public class Map_Activity extends AppCompatActivity {
     private ArrayList items;
     private ArrayList<ModelDecheterie> decheteries;
     private ArrayList<GeoPoint> trajet;
-    private Location localisation = null;
-    private String fournisseur;
-    private ArrayList<ModelDechet> dechets = new ArrayList<>();
+    private ArrayList<ModelDechet> dechets ;
+    private ArrayList<ModelDechet> clenedDechets;
 
     @Override
     public void onCreate(Bundle saveInstantState) {
         super.onCreate(saveInstantState);
         decheteries = new ArrayList<ModelDecheterie>();
+        dechets=new ArrayList<ModelDechet>();
+        clenedDechets=new ArrayList<ModelDechet>();
         try {
             initDechets();
-            initDechetteries();
+           // initDechetteries();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,7 +97,8 @@ public class Map_Activity extends AppCompatActivity {
         trajet = new ArrayList<GeoPoint>();
         OverlayItem point = new OverlayItem("dechet_organique", "moyen", new GeoPoint(45.31765771762817, 5.922782763890293));
         trajet.add(new GeoPoint(point.getPoint().getLatitude(), point.getPoint().getLongitude()));
-        items.add(point);
+      //  items.add(point);
+        decheteries.add(new ModelDecheterie(45.80828947812799,2.789005057397027,"oui","test"));
         if(dechets.size()!=0){
             placeDechet();
         }
@@ -104,6 +107,7 @@ public class Map_Activity extends AppCompatActivity {
         }
         final IMapController mapController = map.getController();
         mapController.setZoom(18.0);
+        mapController.setCenter(new GeoPoint(45.469727002862086,5.972142037934329));
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -120,11 +124,9 @@ public class Map_Activity extends AppCompatActivity {
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
             }
-
             @Override
             public void onProviderEnabled(String provider) {
             }
-
             @Override
             public void onProviderDisabled(String provider) {
                 Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -144,24 +146,28 @@ public class Map_Activity extends AppCompatActivity {
         line.setTitle("Un trajet");
         line.setSubDescription(Polyline.class.getCanonicalName());
         line.setWidth(10f);
+        line.setId("-1");
         line.setColor(Color.RED);
         line.setPoints(trajet);
         line.setGeodesic(true);
         line.setInfoWindow(new BasicInfoWindow(R.layout.bonuspack_bubble, map));
         map.getOverlayManager().add(line) ;
         map.invalidate();
+        /*ModelDechet D=new ModelDechet("organique","petit","test",2.789005057397027,45.80828947812799);
+        dechets.add(D);
         Marker s=new Marker(map);
+        s.setId("test");
         s.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker, MapView mapView) {
-                goTomarker(null);
+                goTomarker("test");
                 return false;
             }
         });
         s.setPosition(new GeoPoint(45.80828947812799,2.789005057397027));
-        mapController.setCenter(s.getPosition());
+       // mapController.setCenter(s.getPosition());
         map.getOverlays().add(s);
-        map.invalidate();
+        map.invalidate();*/
         ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(this, items,
                 new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
                     @Override
@@ -184,6 +190,9 @@ public class Map_Activity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+        /**
+         * mettre en commentaire les autorisations et le location manager si on compile avec un émulateur
+         */
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -196,10 +205,8 @@ public class Map_Activity extends AppCompatActivity {
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-        dechets.clear();
-        decheteries.clear();
         try {
-            initDechetteries();
+//            initDechetteries();
             initDechets();
         } catch (IOException e) {
             e.printStackTrace();
@@ -207,6 +214,7 @@ public class Map_Activity extends AppCompatActivity {
         placeDecheterie();
         placeDechet();
         map.onResume();
+       // map.getController().setCenter(new GeoPoint(45.31765771762817, 5.922782763890293));
     }
 
     @Override
@@ -215,12 +223,17 @@ public class Map_Activity extends AppCompatActivity {
         map.onPause();
     }
 
-    public void addpin(String titre,String desription,GeoPoint g){
-        OverlayItem tmp= new OverlayItem(titre,desription,g);
-        List<OverlayItem> ltmp = new ArrayList<>();
-        ltmp.add(tmp);
-        map.getOverlays().add((Overlay) ltmp);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(resultCode==1){
+            clenedDechets.add((ModelDechet) data.getParcelableExtra("result"));
+        }
+        super.onActivityResult(requestCode,resultCode,data);
+        map.getOverlays().clear();
+        placeDechet();
+        placeDecheterie();
     }
+
 
     @SuppressLint("MissingPermission")
     private void setpos(){
@@ -247,19 +260,52 @@ public class Map_Activity extends AppCompatActivity {
     }
     private void placeDechet(){
         for(int i=0;i<dechets.size();i++){
+            if(!contient()){
             Marker tmp=new Marker(map);
             tmp.setPosition(new GeoPoint(dechets.get(i).latitude, dechets.get(i).longitude));
+            tmp.setId(i+"");
+            dechets.get(i).setId(i+"");
             tmp.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker, MapView mapView) {
-                    goTomarker(null);
+                    goTomarker(marker.getId());
                     return false;
                 }
             });
             map.getOverlays().add(tmp);
-            map.invalidate();
            /* OverlayItem tmp=new OverlayItem("dechet "+dechets.get(i).type, dechets.get(i).taille, new GeoPoint(dechets.get(i).latitude, dechets.get(i).longitude));
             items.add(tmp);*/
+        }}
+        enlevepin();
+    }
+
+    private boolean contient() {
+        for(int i=0;i<clenedDechets.size();i++){
+            for(int j=0;j<dechets.size();j++){
+                if(clenedDechets.get(i).getId().equals(dechets.get(j).getId())){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    private boolean markerCleaned(Marker m){
+        for(int i=0;i<clenedDechets.size();i++){
+                System.out.println(m.getTitle()+"----------------------------------------------------");
+                if(m.getId().equals(clenedDechets.get(i).getId())){
+                    return true;
+            }
+        }
+        return false;
+    }
+    private void enlevepin(){
+        for(int i=0;i<map.getOverlays().size();i++){
+            Overlay tmp=map.getOverlays().get(i);
+            if(tmp instanceof Marker){
+                if(markerCleaned((Marker)tmp)){
+                    map.getOverlays().remove(i);
+                }
+            }
         }
     }
     private void placeDecheterie(){
@@ -268,7 +314,8 @@ public class Map_Activity extends AppCompatActivity {
             tmp.setTitle(decheteries.get(i).nom);
             tmp.setPosition(new GeoPoint(decheteries.get(i).latitude, decheteries.get(i).longitude));
             tmp.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-            tmp.setIcon(getResources().getDrawable(R.drawable.trash));
+            tmp.setId(decheteries.get(i).ID);
+           // tmp.setIcon(getResources().getDrawable(R.drawable.trash));
             map.getOverlays().add(tmp);
             map.invalidate();
         }
@@ -285,8 +332,19 @@ public class Map_Activity extends AppCompatActivity {
         }
         System.out.println(dechets);
     }
-    private void goTomarker(ModelDechet dechet){
+    private void goTomarker(String iddechet){
+        ModelDechet tmp=selectioneDechet(iddechet);
         Intent gameActivity = new Intent(this, MarkerDechet.class);
-        startActivity(gameActivity);
+        gameActivity.putExtra("Cdechet",(Parcelable) tmp);
+        startActivityForResult(gameActivity,0);
+    }
+
+    private ModelDechet selectioneDechet(String id){
+        for(int i=0;i<dechets.size();i++){
+                if(id.equals(dechets.get(i).getId())){
+                    return dechets.get(i);
+                }
+        }
+        return null;
     }
 }
