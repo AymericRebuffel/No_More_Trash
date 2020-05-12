@@ -15,6 +15,7 @@ import com.example.no_more_trash.models.ModelDechet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -53,6 +54,11 @@ public class MarkerDechet extends AppCompatActivity {
 
     private void nettoyer(){
         dechet.setCleaned(true);
+        try {
+            writeJson();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
         Intent swap=new Intent(this,Map_Activity.class);
         swap.putExtra("result",(Parcelable) dechet);
         MarkerDechet.this.setResult(1,swap);
@@ -63,6 +69,22 @@ public class MarkerDechet extends AppCompatActivity {
         Intent swap=new Intent(this,Map_Activity.class);
         MarkerDechet.this.setResult(0,swap);
         MarkerDechet.this.finish();
+    }
+    public void writeJson() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String res = "";
+        try {
+            res = mapper.writeValueAsString(dechet);
+            System.out.println(mapper.writeValueAsString(dechet));
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        FileOutputStream fos = openFileOutput("database_CleanedGarbage.json",MODE_APPEND);
+        if(fos!=null){
+            fos.write((""+res+"\n").getBytes());
+            fos.close();
+        }
     }
 
 }

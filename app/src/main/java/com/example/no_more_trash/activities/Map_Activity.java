@@ -80,7 +80,8 @@ public class Map_Activity extends AppCompatActivity {
         clenedDechets=new ArrayList<ModelDechet>();
         try {
             initDechets();
-           // initDechetteries();
+            initDechetteries();
+            initCleanedGarbage();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -206,11 +207,13 @@ public class Map_Activity extends AppCompatActivity {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         try {
-//            initDechetteries();
+            initDechetteries();
             initDechets();
+            initCleanedGarbage();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        map.getOverlays().clear();
         placeDecheterie();
         placeDechet();
         map.onResume();
@@ -346,5 +349,16 @@ public class Map_Activity extends AppCompatActivity {
                 }
         }
         return null;
+    }
+    private void initCleanedGarbage() throws IOException {
+        FileInputStream fis = openFileInput("database_CleanedGarbage.json");
+        Scanner scanner = new Scanner(fis);
+        String object;
+        ObjectMapper objectMapper = new ObjectMapper();
+        while (scanner.hasNextLine()){
+            object = scanner.nextLine();
+            clenedDechets.add(objectMapper.readValue(object,ModelDechet.class));
+        }
+        System.out.println(clenedDechets.size()+"________-_-_-_-_-_-_");
     }
 }
