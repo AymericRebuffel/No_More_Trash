@@ -17,7 +17,7 @@ import java.util.Date;
 public class ModelDechet implements Parcelable {
     //public ImageView image;
     //public Location location;
-     private  String id;
+    public   String id;
     public double latitude;
     public double longitude;
     public Date date;
@@ -31,7 +31,7 @@ public class ModelDechet implements Parcelable {
                                             @JsonProperty("date") Date date,
                                             @JsonProperty("taille") String taille,
                                             @JsonProperty("type") String type,
-                                            @JsonProperty("clean") boolean clean) {
+                                            @JsonProperty("clean") boolean clean,@JsonProperty("id") String id) {
         //this.image = image;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -39,6 +39,7 @@ public class ModelDechet implements Parcelable {
         this.taille = taille;
         this.type = type;
         this.clean=clean;
+        this.id=id;
     }
 
     protected ModelDechet(Parcel in) {

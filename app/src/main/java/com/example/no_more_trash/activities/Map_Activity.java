@@ -55,6 +55,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Map_Activity extends AppCompatActivity {
@@ -80,7 +81,15 @@ public class Map_Activity extends AppCompatActivity {
         clenedDechets=new ArrayList<ModelDechet>();
         try {
             initDechets();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
             initDechetteries();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
             initCleanedGarbage();
         } catch (IOException e) {
             e.printStackTrace();
@@ -191,9 +200,7 @@ public class Map_Activity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        /**
-         * mettre en commentaire les autorisations et le location manager si on compile avec un émulateur
-         */
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -207,8 +214,16 @@ public class Map_Activity extends AppCompatActivity {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         try {
-            initDechetteries();
             initDechets();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            initDechetteries();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
             initCleanedGarbage();
         } catch (IOException e) {
             e.printStackTrace();
@@ -259,15 +274,25 @@ public class Map_Activity extends AppCompatActivity {
             object = scanner.nextLine();
             dechets.add(objectMapper.readValue(object,ModelDechet.class));
         }
+        //intiID();
         System.out.println(dechets);
     }
+
+    private void intiID() {
+        for(int i=0;i<dechets.size();i++){
+            Random t=new Random();
+            int tmp=t.nextInt();
+            dechets.get(i).setId(tmp+"");
+            System.out.println(dechets.get(i).getId());
+        }
+    }
+
     private void placeDechet(){
         for(int i=0;i<dechets.size();i++){
             if(!contient()){
             Marker tmp=new Marker(map);
             tmp.setPosition(new GeoPoint(dechets.get(i).latitude, dechets.get(i).longitude));
-            tmp.setId(i+"");
-            dechets.get(i).setId(i+"");
+            tmp.setId(dechets.get(i).getId());
             tmp.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker, MapView mapView) {

@@ -54,6 +54,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Date;
+import java.util.Random;
 
 public class DeclarationDechet extends AppCompatActivity {
     private ImageView photo;
@@ -150,7 +151,7 @@ public class DeclarationDechet extends AppCompatActivity {
         taille = spinnerTaille.getSelectedItem().toString();
         Spinner spinnerType = findViewById(R.id.spinnerType);
         type = spinnerType.getSelectedItem().toString();
-        ModelDechet modelDechet = new ModelDechet(/*photo,*/mlocalisation.getLatitude(),mlocalisation.getLongitude(),date,taille,type,false);
+        ModelDechet modelDechet = new ModelDechet(/*photo,*/mlocalisation.getLatitude(),mlocalisation.getLongitude(),date,taille,type,false,new Random().nextInt()+"");
         addNotification();
         writeJson(modelDechet);
         Intent gameActivity = new Intent(DeclarationDechet.this, HomeUser.class);
