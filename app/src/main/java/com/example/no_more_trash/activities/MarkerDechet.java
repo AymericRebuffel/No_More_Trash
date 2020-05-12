@@ -50,6 +50,9 @@ public class MarkerDechet extends AppCompatActivity {
                 pNettoyer();
             }
         });
+        textView.append("Le dêchet de type: "+dechet.getType()+"\n");
+        textView.append("de taille: "+dechet.getTaille()+"\n");
+        textView.append("est-il nettoyé ?");
     }
 
     private void nettoyer(){

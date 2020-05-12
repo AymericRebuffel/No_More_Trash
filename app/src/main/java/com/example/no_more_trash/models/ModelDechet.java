@@ -42,6 +42,26 @@ public class ModelDechet implements Parcelable {
         this.id=id;
     }
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public String getTaille() {
+        return taille;
+    }
+
+    public String getType() {
+        return type;
+    }
+
     protected ModelDechet(Parcel in) {
         id = in.readString();
         latitude = in.readDouble();
