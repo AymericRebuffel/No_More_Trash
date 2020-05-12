@@ -289,7 +289,7 @@ public class Map_Activity extends AppCompatActivity {
 
     private void placeDechet(){
         for(int i=0;i<dechets.size();i++){
-            if(!contient()){
+            if(!contient(dechets.get(i))){
             Marker tmp=new Marker(map);
             tmp.setPosition(new GeoPoint(dechets.get(i).latitude, dechets.get(i).longitude));
             tmp.setId(dechets.get(i).getId());
@@ -307,12 +307,10 @@ public class Map_Activity extends AppCompatActivity {
         enlevepin();
     }
 
-    private boolean contient() {
+    private boolean contient(ModelDechet dechet) {
         for(int i=0;i<clenedDechets.size();i++){
-            for(int j=0;j<dechets.size();j++){
-                if(clenedDechets.get(i).getId().equals(dechets.get(j).getId())){
-                    return true;
-                }
+            if(dechet.getId().equals(clenedDechets.get(i).getId())){
+                return true;
             }
         }
         return false;
